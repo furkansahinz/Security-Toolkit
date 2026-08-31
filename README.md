@@ -62,6 +62,7 @@ samples/                Örnek HTTP request’ler (referans)
 ---
 
 ## Araçlar
+<img width="3372" height="1896" alt="image" src="https://github.com/user-attachments/assets/1ee4ea20-17e8-4bc1-a823-eee090f2a919" />
 
 ### Core Tools
 
