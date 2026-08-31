@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Toolkit</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Theme Flash Prevention -->
+    <script>
+        (function () {
+            const theme = localStorage.getItem('stkV3_theme') ||
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.className = 'theme-' + theme;
+        })();
+    </script>
+</head>
+
+<body>
+    <!-- Desktop Gate Overlay -->
+    <div id="desktop-gate" class="desktop-gate" style="display: none;">
+        <div class="desktop-gate-content">
+            <div class="desktop-gate-icon">🖥️</div>
+            <h2 class="desktop-gate-title">Desktop Required</h2>
+            <p class="desktop-gate-text">
+                Security Toolkit is optimized for desktop screens (≥1200px).<br>
+                Please resize your window or use a desktop computer.
+            </p>
+            <button id="desktop-gate-retry" class="btn btn-primary">
+                I resized, continue
+            </button>
+        </div>
+    </div>
+
+    <!-- Splash Screen -->
+    <div id="splash" class="splash">
+        <div class="splash-background">
+            <div class="splash-blob splash-blob-1"></div>
+            <div class="splash-blob splash-blob-2"></div>
+            <div class="splash-blob splash-blob-3"></div>
+        </div>
+        <div class="splash-content">
+            <h1 class="splash-title">Security Toolkit</h1>
+            <p class="splash-tagline">Offline • Fast • Analyst-friendly</p>
+            <a href="#" id="skip-intro" class="splash-skip">Skip intro →</a>
+        </div>
+    </div>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-right">
+                    <div class="header-status">
+                        <span class="header-status-dot"></span>
+                        <span>Offline • Internal</span>
+                    </div>
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode"
+                        aria-pressed="false">
+                        <span class="theme-toggle__track">
+                            <span class="theme-toggle__thumb">
+                                <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="5" />
+                                    <line x1="12" y1="1" x2="12" y2="3" />
+                                    <line x1="12" y1="21" x2="12" y2="23" />
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                                    <line x1="1" y1="12" x2="3" y2="12" />
+                                    <line x1="21" y1="12" x2="23" y2="12" />
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                                </svg>
+                                <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                                </svg>
+                            </span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Ana İçerik -->
+    <main class="main">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">Security Toolkit</div>
+                <div class="sidebar-tagline">SOC Daily Utilities</div>
+            </div>
+
+            <div class="sidebar-search">
+                <input type="text" class="sidebar-search-input" placeholder="Tool ara..." id="sidebar-search">
+            </div>
+
+            <div class="sidebar-content">
+                <div class="sidebar-section">
+                    <button type="button" class="sidebar-item" data-tool="home">
+                        <span class="sidebar-icon">🏠</span>
+                        <span class="sidebar-label">Home</span>
+                    </button>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Core Tools</div>
+                    <button class="sidebar-item" data-tool="request-analyzer">
+                        <span class="sidebar-icon">🔍</span>
+                        <span class="sidebar-label">Request Analyzer</span>
+                    </button>
+                    <button class="sidebar-item" data-tool="encoding-inspector">
+                        <span class="sidebar-icon">🔓</span>
+                        <span class="sidebar-label">Encoding Inspector</span>
+                    </button>
+                    <button class="sidebar-item" data-tool="message-header">
+                        <span class="sidebar-icon">📧</span>
+                        <span class="sidebar-label">Message Header</span>
+                    </button>
+                    <button class="sidebar-item" data-tool="event-id-lookup">
+                        <span class="sidebar-icon">🪟</span>
+                        <span class="sidebar-label">Windows Event ID Lookup</span>
+                    </button>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Analysis Tools</div>
+                    <button class="sidebar-item" data-tool="link-builder">
+                        <span class="sidebar-icon">🔗</span>
+                        <span class="sidebar-label">Reputation Check</span>
+                    </button>
+                    <button class="sidebar-item" data-tool="defang-refang">
+                        <span class="sidebar-icon">🛡️</span>
+                        <span class="sidebar-label">Defang / Refang</span>
+                    </button>
+                    <button class="sidebar-item" data-tool="duplicate-delete">
+                        <span class="sidebar-icon">🗑️</span>
+                        <span class="sidebar-label">Duplicate Delete</span>
+                    </button>
+                    <button class="sidebar-item" data-tool="email-scope">
+                        <span class="sidebar-icon">📮</span>
+                        <span class="sidebar-label">Email Scope</span>
+                    </button>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Send Mail</div>
+                    <button class="sidebar-item" data-tool="mail-automation">
+                        <span class="sidebar-icon">📤</span>
+                        <span class="sidebar-label">Mail Otomasyonu</span>
+                    </button>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Utilities</div>
+                    <button class="sidebar-item" data-tool="case-notes">
+                        <span class="sidebar-icon">📝</span>
+                        <span class="sidebar-label">Case Notes</span>
+                    </button>
+                    <button class="sidebar-item" data-tool="todo-list">
+                        <span class="sidebar-icon">✅</span>
+                        <span class="sidebar-label">Todo List</span>
+                    </button>
+                    <button class="sidebar-item" data-tool="subnet-calc">
+                        <span class="sidebar-icon">🖧</span>
+                        <span class="sidebar-label">Subnet Calculator</span>
+                    </button>
+                    <button class="sidebar-item" data-tool="pano">
+                        <span class="sidebar-icon">📋</span>
+                        <span class="sidebar-label">Pano</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-content">
+            <div class="container">
+
+                <!-- Home -->
+                <div id="tool-home" class="tool-screen tool-section" style="display: none;">
+                    <div class="home-page">
+                        <header class="home-page-hero">
+                            <span class="home-page-chip">SOC DAILY UTILITIES</span>
+                            <h1 class="home-page-title">Security Toolkit</h1>
+                            <p class="home-page-lead">Analist işlerini hızlandırmak için hazırlanmış dahili araç seti. Bir karta tıklayarak ilgili aracı açın.</p>
+                        </header>
+
+                        <section class="home-page-group">
+                            <h2 class="home-page-group-title">Core Tools</h2>
+                            <div class="home-page-grid">
+                                <button type="button" class="home-tool-card" data-tool="request-analyzer">
+                                    <span class="home-tool-icon">🔍</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Request Analyzer</span>
+                                        <span class="home-tool-desc">Ham HTTP isteklerini inceler; saldırı türünü ve teknik işaretleri çıkarır.</span>
+                                    </span>
+                                </button>
+                                <button type="button" class="home-tool-card" data-tool="encoding-inspector">
+                                    <span class="home-tool-icon">🔓</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Encoding Inspector</span>
+                                        <span class="home-tool-desc">Base64 ve URL encoded metinleri katman katman çözer.</span>
+                                    </span>
+                                </button>
+                                <button type="button" class="home-tool-card" data-tool="message-header">
+                                    <span class="home-tool-icon">📧</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Message Header</span>
+                                        <span class="home-tool-desc">E-posta header'larını hop, SPF/DKIM/DMARC ve routing açısından analiz eder.</span>
+                                    </span>
+                                </button>
+                                <button type="button" class="home-tool-card" data-tool="event-id-lookup">
+                                    <span class="home-tool-icon">🪟</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Windows Event ID Lookup</span>
+                                        <span class="home-tool-desc">Security, Sysmon, PowerShell ve Defender Event ID’lerini offline arar; SOC notu verir.</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </section>
+
+                        <section class="home-page-group">
+                            <h2 class="home-page-group-title">Analysis Tools</h2>
+                            <div class="home-page-grid">
+                                <button type="button" class="home-tool-card" data-tool="link-builder">
+                                    <span class="home-tool-icon">🔗</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Reputation Check</span>
+                                        <span class="home-tool-desc">IP, domain, URL ve hash için VirusTotal ve AbuseIPDB linkleri üretir.</span>
+                                    </span>
+                                </button>
+                                <button type="button" class="home-tool-card" data-tool="defang-refang">
+                                    <span class="home-tool-icon">🛡️</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Defang / Refang</span>
+                                        <span class="home-tool-desc">IOC'leri tıklanamaz hale getirir veya orijinal forma geri çevirir.</span>
+                                    </span>
+                                </button>
+                                <button type="button" class="home-tool-card" data-tool="duplicate-delete">
+                                    <span class="home-tool-icon">🗑️</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Duplicate Delete</span>
+                                        <span class="home-tool-desc">Tekrarlanan satırları temizler, benzersiz değerleri listeler.</span>
+                                    </span>
+                                </button>
+                                <button type="button" class="home-tool-card" data-tool="email-scope">
+                                    <span class="home-tool-icon">📮</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Email Scope</span>
+                                        <span class="home-tool-desc">E-posta adreslerinden wildcard kapsam üretir (*@*.domain.com).</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </section>
+
+                        <section class="home-page-group">
+                            <h2 class="home-page-group-title">Send Mail</h2>
+                            <div class="home-page-grid">
+                                <button type="button" class="home-tool-card" data-tool="mail-automation">
+                                    <span class="home-tool-icon">📤</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Mail Otomasyonu</span>
+                                        <span class="home-tool-desc">Mail ve IP engelleme süreçleri için standart taslaklar üretir.</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </section>
+
+                        <section class="home-page-group">
+                            <h2 class="home-page-group-title">Utilities</h2>
+                            <div class="home-page-grid">
+                                <button type="button" class="home-tool-card" data-tool="case-notes">
+                                    <span class="home-tool-icon">📝</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Case Notes</span>
+                                        <span class="home-tool-desc">Olay notları için yerel, otomatik kaydedilen defter.</span>
+                                    </span>
+                                </button>
+                                <button type="button" class="home-tool-card" data-tool="todo-list">
+                                    <span class="home-tool-icon">✅</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Todo List</span>
+                                        <span class="home-tool-desc">Shift görevlerini takip eden, yerel kayıtlı liste.</span>
+                                    </span>
+                                </button>
+                                <button type="button" class="home-tool-card" data-tool="subnet-calc">
+                                    <span class="home-tool-icon">🖧</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Subnet Calculator</span>
+                                        <span class="home-tool-desc">IPv4 subnet, ağ aralığı ve host hesaplamaları.</span>
+                                    </span>
+                                </button>
+                                <button type="button" class="home-tool-card" data-tool="pano">
+                                    <span class="home-tool-icon">📋</span>
+                                    <span class="home-tool-body">
+                                        <span class="home-tool-name">Pano</span>
+                                        <span class="home-tool-desc">Sık kullanılan içerikleri saklar ve tek tıkla kopyalar.</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Tool A: Request Analyzer -->
+                <div id="tool-request-analyzer" class="tool-screen tool-section" style="display: none;">
+                    <div class="content-grid">
+                        <!-- Sol Panel - Request Girişi -->
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">HTTP Request</h2>
+                                <p class="panel-description">Raw HTTP isteğini buraya yapıştır.</p>
+                            </div>
+                            <div class="panel-body">
+                                <textarea id="request-input" class="request-textarea"
+                                    placeholder="POST /api/login HTTP/1.1&#10;Host: example.com&#10;Content-Type: application/json&#10;&#10;{&#10;  &quot;username&quot;: &quot;admin&quot;,&#10;  &quot;password&quot;: &quot;password123&quot;&#10;}"></textarea>
+                                <div class="button-group">
+                                    <button id="sample-btn" class="btn btn-secondary">
+                                        Örnek Request Yapıştır
+                                    </button>
+                                    <button id="analyze-btn" class="btn btn-primary">
+                                        Analiz Et
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sağ Panel - Analiz Sonucu -->
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Analiz Sonucu</h2>
+                            </div>
+                            <div class="panel-body">
+                                <div id="result-container" class="result-container">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">🔍</div>
+                                        <p class="empty-state-text">Bir HTTP request girin ve analiz edin.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Sonuç Template (JavaScript tarafından doldurulacak) -->
+                                <div id="result-content" class="result-content" style="display: none;">
+                                    <div class="status-badge-container">
+                                        <span id="status-badge" class="status-badge"></span>
+                                    </div>
+
+                                    <div class="result-section">
+                                        <h3 class="result-label">Saldırı Türü</h3>
+                                        <p id="attack-type" class="result-value"></p>
+                                    </div>
+
+                                    <div class="result-section">
+                                        <h3 class="result-label">Açıklama</h3>
+                                        <p id="explanation" class="result-explanation"></p>
+                                    </div>
+
+                                    <div class="result-section" id="signals-section" style="display: none;">
+                                        <h3 class="result-label">Teknik İşaretler</h3>
+                                        <ul id="signals-list" class="signals-list"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool B: Encoding Inspector -->
+                <div id="tool-encoding-inspector" class="tool-screen tool-section" style="display: none;">
+                    <div class="enc-container">
+                        <!-- Input Panel -->
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Input</h2>
+                                <p class="panel-description">Base64 / URL encoded / raw metni yapıştır.</p>
+                            </div>
+                            <div class="panel-body">
+                                <textarea id="enc-input" class="request-textarea"
+                                    placeholder="QWxhZGRpbjpvcGVuIHNlc2FtZQ==&#10;veya&#10;%51%57%78%68%5a%47%52%70%62%6a%70%76%63%47%56%75%49%48%4e%6c%63%32%46%74%5a%51%3d%3d"></textarea>
+
+                                <div class="enc-file-input">
+                                    <input type="file" id="enc-file" accept=".txt,.log,.json" style="display: none;">
+                                    <button id="enc-file-btn" class="btn btn-secondary">
+                                        📁 Dosya Seç
+                                    </button>
+                                    <span id="enc-file-name" class="enc-file-name"></span>
+                                </div>
+
+                                <!-- Options -->
+                                <div class="enc-options">
+                                    <label class="enc-checkbox">
+                                        <input type="checkbox" id="opt-auto-detect" checked>
+                                        <span>Auto Detect (Base64 olasılık skoru)</span>
+                                    </label>
+                                    <label class="enc-checkbox">
+                                        <input type="checkbox" id="opt-mixed-decode" checked>
+                                        <span>Mixed Decode (URL → Base64)</span>
+                                    </label>
+                                    <label class="enc-checkbox">
+                                        <input type="checkbox" id="opt-recursive" checked>
+                                        <span>Recursive Decode (katman katman)</span>
+                                    </label>
+                                    <label class="enc-checkbox">
+                                        <input type="checkbox" id="opt-explain" checked>
+                                        <span>Explain Mode (adımları yaz)</span>
+                                    </label>
+                                    <label class="enc-checkbox">
+                                        <input type="checkbox" id="opt-safe-preview" checked>
+                                        <span>Safe Preview (binary ise HEX göster)</span>
+                                    </label>
+                                    <label class="enc-checkbox">
+                                        <input type="checkbox" id="opt-delta" checked>
+                                        <span>Delta / Layer View (katman farklarını göster)</span>
+                                    </label>
+                                </div>
+
+                                <!-- Buttons -->
+                                <div class="button-group">
+                                    <button id="enc-clear-btn" class="btn btn-secondary">
+                                        Clear
+                                    </button>
+                                    <button id="enc-analyze-btn" class="btn btn-primary">
+                                        Analyze
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Results Panel -->
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Results</h2>
+                                <div class="enc-result-actions">
+                                    <button id="enc-copy-output" class="btn btn-secondary btn-small"
+                                        style="display: none;">
+                                        📋 Copy Output
+                                    </button>
+                                    <button id="enc-copy-json" class="btn btn-secondary btn-small"
+                                        style="display: none;">
+                                        📄 Copy JSON
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="enc-result-container" class="result-container">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">🔓</div>
+                                        <p class="empty-state-text">Bir encoded metin girin ve analiz edin.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Results Content -->
+                                <div id="enc-results" style="display: none;">
+                                    <!-- Summary Card -->
+                                    <div class="enc-card">
+                                        <h3 class="enc-card-title">📊 Summary</h3>
+                                        <div class="enc-summary-grid">
+                                            <div class="enc-summary-item">
+                                                <span class="enc-summary-label">Base64 Confidence</span>
+                                                <span id="enc-confidence" class="enc-summary-value">-</span>
+                                            </div>
+                                            <div class="enc-summary-item">
+                                                <span class="enc-summary-label">Layers Decoded</span>
+                                                <span id="enc-layers" class="enc-summary-value">-</span>
+                                            </div>
+                                            <div class="enc-summary-item">
+                                                <span class="enc-summary-label">Output Type</span>
+                                                <span id="enc-output-type" class="enc-summary-value">-</span>
+                                            </div>
+                                            <div class="enc-summary-item">
+                                                <span class="enc-summary-label">Obfuscation Score</span>
+                                                <span id="enc-obfuscation" class="enc-summary-value">-</span>
+                                            </div>
+                                            <div class="enc-summary-item enc-summary-full">
+                                                <span class="enc-summary-label">Guessed Context</span>
+                                                <span id="enc-context" class="enc-summary-value">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Layer Explorer -->
+                                    <div class="enc-card">
+                                        <h3 class="enc-card-title">🔍 Layer Explorer</h3>
+                                        <div id="enc-layers-container"></div>
+                                    </div>
+
+                                    <!-- Explain Log -->
+                                    <div id="enc-explain-card" class="enc-card" style="display: none;">
+                                        <h3 class="enc-card-title">📝 Explain Log</h3>
+                                        <div id="enc-explain-log" class="enc-explain-log"></div>
+                                    </div>
+
+                                    <!-- Hex Preview -->
+                                    <div id="enc-hex-card" class="enc-card" style="display: none;">
+                                        <h3 class="enc-card-title">🔢 Hex Preview</h3>
+                                        <div id="enc-hex-preview" class="enc-hex-preview"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool C: Message Header Analyzer -->
+                <div id="tool-message-header" class="tool-screen tool-section" style="display: none;">
+                    <div class="mh-container">
+                        <!-- Input Panel -->
+                        <div class="panel mh-input-panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Email Header Input</h2>
+                                <p class="panel-description">
+                                    Ham email header'ını yapıştırın veya sürükleyip bırakın.
+                                    <a href="#" id="mh-help-link" class="mh-help-link">Header nasıl alınır?</a>
+                                </p>
+                            </div>
+                            <div class="panel-body">
+                                <!-- Drag & Drop Zone -->
+                                <div id="mh-drop-zone" class="mh-drop-zone">
+                                    <textarea id="mh-input" class="request-textarea mh-textarea"
+                                        placeholder="Delivered-To: user@example.com&#10;Received: from mail.example.com ...&#10;From: sender@example.com&#10;To: recipient@example.com&#10;Subject: Test Email&#10;Date: Mon, 1 Jan 2024 10:00:00 +0000&#10;Message-ID: <12345@example.com>"></textarea>
+                                    <div class="mh-drop-overlay" style="display: none;">
+                                        <div class="mh-drop-icon">📁</div>
+                                        <div class="mh-drop-text">Dosyayı buraya bırakın</div>
+                                    </div>
+                                </div>
+
+                                <div class="mh-file-input">
+                                    <input type="file" id="mh-file" accept=".txt,.log,.eml" style="display: none;">
+                                    <button id="mh-file-btn" class="btn btn-secondary">
+                                        📁 Dosya Seç
+                                    </button>
+                                    <span id="mh-file-name" class="enc-file-name"></span>
+                                </div>
+
+                                <!-- Buttons -->
+                                <div class="button-group">
+                                    <button id="mh-example-btn" class="btn btn-secondary">
+                                        📝 Örnek Yükle
+                                    </button>
+                                    <button id="mh-clear-btn" class="btn btn-secondary">
+                                        Clear
+                                    </button>
+                                    <button id="mh-analyze-btn" class="btn btn-primary">
+                                        Analyze Header
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Results Panel -->
+                        <div class="panel mh-results-panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Analysis Results</h2>
+                                <div class="enc-result-actions">
+                                    <button id="mh-copy-report" class="btn btn-secondary btn-small"
+                                        style="display: none;">
+                                        📋 Copy Report
+                                    </button>
+                                    <button id="mh-copy-json" class="btn btn-secondary btn-small"
+                                        style="display: none;">
+                                        📄 Copy JSON
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="mh-result-container" class="result-container">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">📧</div>
+                                        <p class="empty-state-text">Bir email header girin ve analiz edin.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Results Content -->
+                                <div id="mh-results" style="display: none;">
+                                    <!-- Quick Summary -->
+                                    <div class="enc-card">
+                                        <h3 class="enc-card-title">📊 Quick Summary</h3>
+                                        <div class="mh-summary-grid">
+                                            <div class="mh-summary-item">
+                                                <span class="mh-summary-label">Total Hops</span>
+                                                <span id="mh-total-hops" class="mh-summary-value">-</span>
+                                            </div>
+                                            <div class="mh-summary-item">
+                                                <span class="mh-summary-label">Total Transit Time</span>
+                                                <span id="mh-transit-time" class="mh-summary-value">-</span>
+                                            </div>
+                                            <div class="mh-summary-item">
+                                                <span class="mh-summary-label">Largest Delay</span>
+                                                <span id="mh-largest-delay" class="mh-summary-value">-</span>
+                                            </div>
+                                            <div class="mh-summary-item">
+                                                <span class="mh-summary-label">Suspected Delay Hop</span>
+                                                <span id="mh-delay-hop" class="mh-summary-value">-</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mh-divider"></div>
+
+                                        <div class="mh-auth-summary">
+                                            <h4 class="mh-subsection-title">Authentication Summary</h4>
+                                            <div class="mh-auth-grid">
+                                                <div class="mh-auth-item">
+                                                    <span class="mh-auth-label">SPF:</span>
+                                                    <span id="mh-spf" class="mh-auth-badge">-</span>
+                                                </div>
+                                                <div class="mh-auth-item">
+                                                    <span class="mh-auth-label">DKIM:</span>
+                                                    <span id="mh-dkim" class="mh-auth-badge">-</span>
+                                                </div>
+                                                <div class="mh-auth-item">
+                                                    <span class="mh-auth-label">DMARC:</span>
+                                                    <span id="mh-dmarc" class="mh-auth-badge">-</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mh-divider"></div>
+
+                                        <div class="mh-fields-summary">
+                                            <div class="mh-field"><strong>From:</strong> <span id="mh-from">-</span>
+                                            </div>
+                                            <div class="mh-field"><strong>To:</strong> <span id="mh-to">-</span></div>
+                                            <div class="mh-field"><strong>Subject:</strong> <span
+                                                    id="mh-subject">-</span></div>
+                                            <div class="mh-field"><strong>Message-ID:</strong> <span
+                                                    id="mh-message-id">-</span></div>
+                                            <div class="mh-field"><strong>Return-Path:</strong> <span
+                                                    id="mh-return-path">-</span></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hop Timeline -->
+                                    <div class="enc-card">
+                                        <h3 class="enc-card-title">🕐 Hop Timeline</h3>
+                                        <div class="mh-timeline-controls">
+                                            <label class="enc-checkbox">
+                                                <input type="radio" name="timeline-order" id="timeline-header-order"
+                                                    checked>
+                                                <span>As in header order</span>
+                                            </label>
+                                            <label class="enc-checkbox">
+                                                <input type="radio" name="timeline-order" id="timeline-chronological">
+                                                <span>Chronological (sorted by time)</span>
+                                            </label>
+                                        </div>
+                                        <div id="mh-timeline" class="mh-timeline"></div>
+                                    </div>
+
+                                    <!-- Authentication Details -->
+                                    <div class="enc-card">
+                                        <h3 class="enc-card-title">🔐 Authentication & Anti-spam</h3>
+                                        <div id="mh-auth-details" class="mh-auth-details"></div>
+                                    </div>
+
+                                    <!-- Raw Parsed Fields -->
+                                    <div class="enc-card">
+                                        <h3 class="enc-card-title">📋 Raw Parsed Fields</h3>
+                                        <div id="mh-raw-fields" class="mh-raw-fields"></div>
+                                    </div>
+
+                                    <!-- Explain / Notes -->
+                                    <div class="enc-card">
+                                        <h3 class="enc-card-title">💡 Notlar ve Yorumlama</h3>
+                                        <div id="mh-notes" class="mh-notes"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool: Windows Event ID Lookup -->
+                <div id="tool-event-id-lookup" class="tool-screen tool-section" style="display: none;">
+                    <div class="tool-header">
+                        <h1 class="tool-title">Windows Event ID Lookup</h1>
+                        <p class="tool-description">Security, Sysmon, PowerShell ve Defender Event ID’lerini offline arayın.</p>
+                    </div>
+
+                    <div class="tool-grid">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Arama</h2>
+                                <p class="panel-description">Event ID, kaynak veya anahtar kelime girin (ör. 4625, lsass, kerberos).</p>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="evid-search">Sorgu</label>
+                                    <input type="text" id="evid-search" class="form-input" placeholder="4624, failed logon, Sysmon, RDP..." autocomplete="off">
+                                </div>
+                                <div class="button-group">
+                                    <button id="evid-clear-btn" class="btn btn-secondary" type="button">
+                                        Clear
+                                    </button>
+                                    <button id="evid-lookup-btn" class="btn btn-primary" type="button">
+                                        Lookup
+                                    </button>
+                                </div>
+                                <div>
+                                    <p class="panel-description" style="margin-bottom: 8px;">Kategori</p>
+                                    <div id="evid-filters" class="evid-filters"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Sonuçlar</h2>
+                                <div class="panel-meta">
+                                    <span id="evid-count" class="char-count">0 kayıt</span>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="evid-results" class="evid-results">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">🪟</div>
+                                        <p class="empty-state-text">Event ID veya anahtar kelime arayın.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 4: Reputation Check -->
+                <div id="tool-link-builder" class="tool-screen tool-section" style="display: none;">
+                    <div class="tool-header">
+                        <h1 class="tool-title">Reputation Check</h1>
+                        <p class="tool-description">IP, Domain, URL ve Hash için VirusTotal ve AbuseIPDB linkleri
+                            oluşturur.</p>
+                    </div>
+
+                    <div class="tool-grid">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Input (IOCs)</h2>
+                                <p class="panel-description">IP adresleri, domain'ler, URL'ler veya hash'leri girin.
+                                    Çoklu giriş desteklenir.</p>
+                            </div>
+                            <div class="panel-body">
+                                <textarea id="link-input" class="request-textarea"
+                                    placeholder="192.168.1.1&#10;example.com&#10;http://malicious.com&#10;5d41402abc4b2a76b9719d911017c592"></textarea>
+                                <div class="button-group">
+                                    <button id="link-clear-btn" class="btn btn-secondary">
+                                        Clear
+                                    </button>
+                                    <button id="link-generate-btn" class="btn btn-primary">
+                                        Generate Links
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Generated Links</h2>
+                            </div>
+                            <div class="panel-body">
+                                <textarea id="link-output" class="request-textarea"
+                                    placeholder="Linkler burada görünecek..." readonly
+                                    style="display: none;"></textarea>
+                                <div id="link-card-view" class="link-card-view"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 5: Defang/Refang -->
+                <div id="tool-defang-refang" class="tool-screen tool-section" style="display: none;">
+                    <div class="tool-header">
+                        <h1 class="tool-title">IOC Defanger / Refanger</h1>
+                        <p class="tool-description">IP ve URL'leri tıklanamaz hale getirin veya geri çevirin.</p>
+                    </div>
+
+                    <div class="tool-grid">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Input</h2>
+                                <p class="panel-description">IP adresleri, URL'ler veya metinler girin.</p>
+                            </div>
+                            <div class="panel-body">
+                                <textarea id="defang-input" class="request-textarea"
+                                    placeholder="http://example.com&#10;192.168.1.1&#10;malicious.com"></textarea>
+                                <div class="button-group">
+                                    <button id="defang-clear-btn" class="btn btn-secondary">
+                                        Clear
+                                    </button>
+                                    <button id="refang-btn" class="btn btn-secondary">
+                                        Refang
+                                    </button>
+                                    <button id="defang-btn" class="btn btn-primary">
+                                        Defang
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Output</h2>
+                            </div>
+                            <div class="panel-body">
+                                <textarea id="defang-output" class="request-textarea"
+                                    placeholder="Sonuç burada görünecek..." readonly></textarea>
+                                <div class="button-group">
+                                    <button id="defang-copy-btn" class="btn btn-secondary">
+                                        📋 Copy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 6: Duplicate Delete -->
+                <div id="tool-duplicate-delete" class="tool-screen tool-section" style="display: none;">
+                    <div class="tool-header">
+                        <h1 class="tool-title">Duplicate Delete</h1>
+                        <p class="tool-description">Tekrarlanan verileri kaldırır ve benzersiz değerleri listeler.</p>
+                    </div>
+
+                    <div class="tool-grid">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Input</h2>
+                                <p class="panel-description">Verilerinizi girin (whitespace, virgül veya noktalı virgül
+                                    ile ayrılmış).</p>
+                            </div>
+                            <div class="panel-body">
+                                <textarea id="duplicate-input" class="request-textarea"
+                                    placeholder="value1&#10;value2&#10;value1&#10;value3&#10;value2"></textarea>
+                                <div class="button-group">
+                                    <button id="duplicate-clear-btn" class="btn btn-secondary">
+                                        Clear
+                                    </button>
+                                    <button id="duplicate-process-btn" class="btn btn-primary">
+                                        Process
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Output (Unique Values)</h2>
+                            </div>
+                            <div class="panel-body">
+                                <div id="duplicate-stats" class="duplicate-stats" style="display: none;"></div>
+                                <textarea id="duplicate-output" class="request-textarea"
+                                    placeholder="Benzersiz değerler burada görünecek..." readonly></textarea>
+                                <div class="button-group">
+                                    <button id="duplicate-sort-asc-btn" class="btn btn-secondary"
+                                        style="display: none;">
+                                        ⬆️ Küçükten Büyüğe
+                                    </button>
+                                    <button id="duplicate-sort-desc-btn" class="btn btn-secondary"
+                                        style="display: none;">
+                                        ⬇️ Büyükten Küçüğe
+                                    </button>
+                                    <button id="duplicate-copy-btn" class="btn btn-secondary">
+                                        📋 Copy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 7: Email Scope Expander -->
+                <div id="tool-email-scope" class="tool-screen tool-section" style="display: none;">
+                    <div class="tool-header">
+                        <h1 class="tool-title">Email Scope Expander</h1>
+                        <p class="tool-description">Email adreslerinden wildcard kapsam üretir (*@*.domain.com).</p>
+                    </div>
+
+                    <div class="tool-grid">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Email Addresses</h2>
+                                <p class="panel-description">Email adreslerini girin (çoklu giriş desteklenir).</p>
+                            </div>
+                            <div class="panel-body">
+                                <textarea id="email-input" class="request-textarea"
+                                    placeholder="user@example.com&#10;admin@sub.example.com&#10;test@another.domain.com"></textarea>
+                                <div class="button-group">
+                                    <button id="email-clear-btn" class="btn btn-secondary">
+                                        Clear
+                                    </button>
+                                    <button id="email-expand-btn" class="btn btn-primary">
+                                        Expand Scope
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Wildcard Scopes</h2>
+                            </div>
+                            <div class="panel-body">
+                                <textarea id="email-output" class="request-textarea"
+                                    placeholder="Wildcard kapsamlar burada görünecek..." readonly></textarea>
+                                <div class="button-group">
+                                    <button id="email-copy-btn" class="btn btn-secondary">
+                                        📋 Copy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool: Mail Otomasyonu -->
+                <div id="tool-mail-automation" class="tool-screen tool-section" style="display: none;">
+                    <div class="tool-header">
+                        <h1 class="tool-title">Mail Otomasyonu</h1>
+                        <p class="tool-description">Mail ve IP engelleme süreçleri için standart mail taslakları
+                            oluşturur.</p>
+                    </div>
+
+                    <div class="single-panel-layout">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Mod Seçimi</h2>
+                                <p class="panel-description">İşlem tipini seçin ve formu doldurun.</p>
+                            </div>
+                            <div class="panel-body">
+                                <!-- Mode Toggle -->
+                                <div class="button-group">
+                                    <button id="mailauto-mode-mail" class="btn btn-primary">
+                                        Mail Adresi Engelleme
+                                    </button>
+                                    <button id="mailauto-mode-ip" class="btn btn-secondary">
+                                        IP Adresi Engelleme
+                                    </button>
+                                </div>
+
+                                <!-- Ortak Alanlar -->
+                                <div class="form-group" style="margin-top: 16px;">
+                                    <label for="mailauto-to">To</label>
+                                    <input type="text" id="mailauto-to" class="form-input" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mailauto-cc">CC</label>
+                                    <input type="text" id="mailauto-cc" class="form-input" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mailauto-subject">Subject</label>
+                                    <input type="text" id="mailauto-subject" class="form-input" readonly>
+                                </div>
+
+                                <!-- Mail Adresi Engelleme Modu -->
+                                <div id="mailauto-mail-mode" style="margin-top: 16px;">
+                                    <div class="form-group">
+                                        <label for="mailauto-mail-blocked">Bloklanan Mail Adresleri</label>
+                                        <textarea id="mailauto-mail-blocked" class="request-textarea"
+                                            placeholder="her satıra bir mail adresi yazın&#10;ornek1@domain.com&#10;ornek2@domain.com"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- IP Adresi Engelleme Modu -->
+                                <div id="mailauto-ip-mode" style="margin-top: 16px; display: none;">
+                                    <div class="form-group">
+                                        <label>IP Engelleme Tablosu</label>
+                                        <div id="mailauto-ip-table" class="subnet-input-grid"
+                                            style="grid-template-columns: 1.5fr 0.8fr 1.5fr 1.2fr auto; gap: 8px;">
+                                            <!-- Header Row -->
+                                            <div><strong>IP</strong></div>
+                                            <div><strong>Alert</strong></div>
+                                            <div><strong>Sebep</strong></div>
+                                            <div><strong>Checkpoint FW Kontrolü</strong></div>
+                                            <div></div>
+                                            <!-- Dinamik satırlar JS ile eklenecek -->
+                                        </div>
+                                        <div class="button-group" style="margin-top: 12px;">
+                                            <button id="mailauto-add-row-btn" class="btn btn-secondary">
+                                                Satır Ekle
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Son Kontrol -->
+                                <div class="form-group" style="margin-top: 16px;">
+                                    <label class="enc-checkbox">
+                                        <input type="checkbox" id="mailauto-confirm">
+                                        <span>İçeriği kontrol ettim, göndermeye hazırım.</span>
+                                    </label>
+                                </div>
+
+                                <div class="button-group" style="margin-top: 8px;">
+                                    <button id="mailauto-check-btn" class="btn btn-secondary">
+                                        Taslağı Oluştur
+                                    </button>
+                                    <button id="mailauto-send-btn" class="btn btn-primary" disabled>
+                                        Gönder (Taslağı Aç)
+                                    </button>
+                                </div>
+
+                                <!-- Taslak Önizleme -->
+                                <div class="form-group" style="margin-top: 16px;">
+                                    <label for="mailauto-preview">Taslak Önizleme</label>
+                                    <textarea id="mailauto-preview" class="request-textarea"
+                                        placeholder="Önce 'Taslağı Oluştur' butonuna basın..." readonly
+                                        rows="8"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 8: Case Notes -->
+                <div id="tool-case-notes" class="tool-screen tool-section" style="display: none;">
+                    <div class="tool-header">
+                        <h1 class="tool-title">Case Note Scratchpad</h1>
+                        <p class="tool-description">Olay notları için kalıcı not defteri (LocalStorage ile otomatik
+                            kaydedilir).</p>
+                    </div>
+
+                    <div class="single-panel-layout">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Notes</h2>
+                                <div class="panel-meta">
+                                    <span id="case-notes-char-count" class="char-count">0 karakter</span>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <textarea id="case-notes-textarea" class="request-textarea case-notes-editor"
+                                    placeholder="Olay notlarınızı buraya yazın. Otomatik olarak kaydedilir..."></textarea>
+                                <div class="button-group">
+                                    <button id="case-notes-clear-btn" class="btn btn-secondary">
+                                        🗑️ Notları Temizle
+                                    </button>
+                                    <button id="case-notes-copy-btn" class="btn btn-secondary">
+                                        📋 Copy
+                                    </button>
+                                    <button id="case-notes-export-btn" class="btn btn-primary">
+                                        💾 Dışa Aktar (TXT)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 9: Subnet Calculator -->
+                <div id="tool-subnet-calc" class="tool-screen tool-section" style="display: none;">
+                    <div class="tool-header">
+                        <h1 class="tool-title">Subnet Calculator</h1>
+                        <p class="tool-description">IPv4 subnet hesaplamaları ve network bilgileri.</p>
+                    </div>
+
+                    <div class="single-panel-layout">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Subnet Input</h2>
+                                <p class="panel-description">IP ve CIDR girin (örn: 192.168.1.0 ve /24 veya
+                                    192.168.1.0/24).</p>
+                            </div>
+                            <div class="panel-body">
+                                <div class="subnet-input-grid">
+                                    <div class="form-group">
+                                        <label for="subnet-ip">IP Address</label>
+                                        <input type="text" id="subnet-ip" class="form-input" placeholder="192.168.1.0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="subnet-cidr">CIDR</label>
+                                        <input type="text" id="subnet-cidr" class="form-input" placeholder="/24">
+                                    </div>
+                                </div>
+                                <div class="button-group">
+                                    <button id="subnet-clear-btn" class="btn btn-secondary">
+                                        Clear
+                                    </button>
+                                    <button id="subnet-calculate-btn" class="btn btn-primary">
+                                        Calculate
+                                    </button>
+                                </div>
+
+                                <div id="subnet-results" class="subnet-results" style="display: none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 11: Todo List -->
+                <div id="tool-todo-list" class="tool-screen tool-section" style="display: none;">
+                    <div class="tool-header">
+                        <h1 class="tool-title">Todo List</h1>
+                        <p class="tool-description">Görev listesi (LocalStorage ile otomatik kaydedilir).</p>
+                    </div>
+
+                    <div class="single-panel-layout">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Todo List</h2>
+                                <div class="panel-meta">
+                                    <span id="todo-stats" class="char-count">0 görev</span>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <!-- Add Todo Input -->
+                                <div class="todo-input-group">
+                                    <input type="text" id="todo-input" class="todo-input"
+                                        placeholder="Yeni görev ekle..." autocomplete="off">
+                                    <button id="todo-add-btn" class="btn btn-primary">
+                                        ➕ Ekle
+                                    </button>
+                                </div>
+
+                                <!-- Todo List Container -->
+                                <div id="todo-list-container" class="todo-list-container">
+                                    <div class="empty-state" id="todo-empty-state">
+                                        <div class="empty-state-icon">✅</div>
+                                        <p class="empty-state-text">Henüz görev yok. Yeni görev ekleyin.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="button-group">
+                                    <button id="todo-clear-completed-btn" class="btn btn-secondary">
+                                        🗑️ Tamamlananları Temizle
+                                    </button>
+                                    <button id="todo-clear-all-btn" class="btn btn-secondary">
+                                        🗑️ Tümünü Temizle
+                                    </button>
+                                    <button id="todo-export-btn" class="btn btn-primary">
+                                        💾 Dışa Aktar (TXT)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool: Pano (Clipboard Board) -->
+                <div id="tool-pano" class="tool-screen tool-section" style="display: none;">
+                    <div class="tool-header">
+                        <h1 class="tool-title">Pano</h1>
+                        <p class="tool-description">Panoya eklenen içerikleri yönetin ve hızlıca kopyalayın.</p>
+                    </div>
+
+                    <div class="single-panel-layout">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Pano</h2>
+                                <div class="pano-header-actions">
+                                    <input type="text" id="pano-filter-input" class="pano-filter-input"
+                                        placeholder="Filtrele...">
+                                    <label class="pano-filter-checkbox">
+                                        <input type="checkbox" id="pano-show-pinned-only">
+                                        <span>Sadece Tutturulanlar</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <!-- Input Area -->
+                                <div class="pano-input-area">
+                                    <textarea id="pano-input" class="pano-input"
+                                        placeholder="Metin girin veya Ctrl+V ile yapıştırın..." rows="3"></textarea>
+                                    <div class="button-group">
+                                        <button id="pano-paste-btn" class="btn btn-secondary">
+                                            📋 Panoya Yapıştır
+                                        </button>
+                                        <button id="pano-add-btn" class="btn btn-primary">
+                                            Panoya Ekle
+                                        </button>
+                                        <button id="pano-select-all-btn" class="btn btn-secondary">
+                                            ☑️ Hepsini Seç
+                                        </button>
+                                        <button id="pano-bulk-delete-btn" class="btn btn-secondary">
+                                            Toplu Sil
+                                        </button>
+                                        <button id="pano-bulk-lock-btn" class="btn btn-secondary">
+                                            Toplu Kilitle
+                                        </button>
+                                        <button id="pano-clear-selection-btn" class="btn btn-secondary">
+                                            Seçimi Temizle
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Grid Container -->
+                                <div id="pano-grid" class="pano-grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-left">Bu araç internal çalışır, güvenlik analizi içindir.</div>
+                <div class="footer-right">Made for daily SOC work</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Help Modal -->
+    <div id="mh-help-modal" class="mh-modal" style="display: none;">
+        <div class="mh-modal-content">
+            <span class="mh-modal-close">&times;</span>
+            <h3>Header Nasıl Alınır?</h3>
+            <div class="mh-help-content">
+                <h4>Outlook Masaüstü Uygulaması:</h4>
+                <ol>
+                    <li>Email mesajını açın</li>
+                    <li>Üst menüden <strong>Dosya (File)</strong> sekmesine tıklayın</li>
+                    <li><strong>Özellikler (Properties)</strong> veya <strong>Bilgi (Info)</strong> bölümünü seçin</li>
+                    <li>Açılan pencerede <strong>"Internet üstbilgileri" (Internet headers)</strong> alanını bulun</li>
+                    <li>Header metnini seçip kopyalayın</li>
+                </ol>
+                <p style="margin-top: 20px; color: #86868b; font-size: 13px;">
+                    <strong>Not:</strong> Bazı Outlook sürümlerinde, email'e sağ tıklayıp "Mesaj Seçenekleri" (Message
+                    Options)
+                    veya "Özellikler" (Properties) seçeneğini de kullanabilirsiniz.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script src="js/utils.js"></script>
+    <script src="js/tools/request-analyzer.js"></script>
+    <script src="js/tools/encoding-inspector.js"></script>
+    <script src="js/tools/message-header-analyzer.js"></script>
+    <script src="js/tools/tool-event-id-lookup.js"></script>
+    <script src="js/tools/tool-link-builder.js"></script>
+    <script src="js/tools/tool-defang-refang.js"></script>
+    <script src="js/tools/tool-duplicate-delete.js"></script>
+    <script src="js/tools/tool-email-scope.js"></script>
+    <script src="js/tools/tool-mail-automation.js"></script>
+    <script src="js/tools/tool-case-notes.js"></script>
+    <script src="js/tools/tool-todo-list.js"></script>
+    <script src="js/tools/tool-subnet-calc.js"></script>
+    <script src="js/storage/indexeddb.js"></script>
+    <script src="js/tools/tool-pano.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
